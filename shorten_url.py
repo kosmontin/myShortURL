@@ -2,6 +2,23 @@ import os
 
 import requests
 from dotenv import load_dotenv
+from urllib.parse import urlparse
+
+
+def count_clicks(token, url):
+    bitlink = ''.join((urlparse(url).netloc, urlparse(url).path))
+    headers = {
+        'Authorization': token,
+        'Content-Type': 'application/json'
+    }
+    params = {'unit': 'month', 'units': -1}
+    response = requests.get(
+        f'https://api-ssl.bitly.com/v4/bitlinks/{bitlink}/clicks/summary',
+        headers=headers,
+        params=params
+    )
+    response.raise_for_status()
+    return response.json()['total_clicks']
 
 
 def shorten_link(token, url):
@@ -23,7 +40,8 @@ def main():
         exit()
     url = input('Введите ссылку: ')
     try:
-        print(shorten_link(token, url))
+        # print(shorten_link(token, url))
+        print(count_clicks(token, url))
     except requests.exceptions.HTTPError as e:
         print('Ошибка ввода: \n', e.args)
 
