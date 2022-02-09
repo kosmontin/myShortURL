@@ -5,6 +5,11 @@ from dotenv import load_dotenv
 from urllib.parse import urlparse
 
 
+def is_bitlink(url):
+    return True if urlparse(url).netloc == 'bit.ly' else False
+
+
+
 def count_clicks(token, url):
     bitlink = ''.join((urlparse(url).netloc, urlparse(url).path))
     headers = {
@@ -29,7 +34,7 @@ def shorten_link(token, url):
     data = {'long_url': url}
     response = requests.post('https://api-ssl.bitly.com/v4/shorten', headers=headers, json=data)
     response.raise_for_status()
-    return 'Битлинк ' + response.json()['link']
+    return response.json()['link']
 
 
 def main():
@@ -40,8 +45,10 @@ def main():
         exit()
     url = input('Введите ссылку: ')
     try:
-        # print(shorten_link(token, url))
-        print(count_clicks(token, url))
+        if is_bitlink(url):
+            print('По вашей ссылке прошли: {0} раз(а)'.format(count_clicks(token, url)))
+        else:
+            print('Битлинк: ', shorten_link(token, url))
     except requests.exceptions.HTTPError as e:
         print('Ошибка ввода: \n', e.args)
 
