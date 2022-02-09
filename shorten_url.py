@@ -37,8 +37,8 @@ def shorten_link(token, url):
         'Authorization': token,
         'Content-Type': 'application/json'
     }
-    data = {'long_url': url}
-    response = requests.post('https://api-ssl.bitly.com/v4/shorten', headers=headers, json=data)
+    params = {'long_url': url}
+    response = requests.post('https://api-ssl.bitly.com/v4/shorten', headers=headers, json=params)
     response.raise_for_status()
     return response.json()['link']
 
