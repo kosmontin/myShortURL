@@ -39,7 +39,7 @@ def shorten_link(token, url):
 
 def main():
     load_dotenv()
-    token = os.getenv('bitly_token')
+    token = os.getenv('BITLY_TOKEN')
     if not token:
         print('Файл .env не найден в текущей папке или в нем отсутствует TOKEN')
         exit()
