@@ -5,9 +5,14 @@ import requests
 from dotenv import load_dotenv
 
 
-def is_bitlink(url):
-    return True if urlparse(url).netloc == 'bit.ly' else False
-
+def is_bitlink(url, token):
+    bitlink = ''.join((urlparse(url).netloc, urlparse(url).path))
+    headers = {
+        'Authorization': token,
+        'Content-Type': 'application/json'
+    }
+    response = requests.get(f'https://api-ssl.bitly.com/v4/bitlinks/{bitlink}', headers=headers)
+    return True if response.ok else False
 
 
 def count_clicks(token, url):
@@ -45,7 +50,7 @@ def main():
         exit()
     url = input('Введите ссылку: ')
     try:
-        if is_bitlink(url):
+        if is_bitlink(url, token):
             print('По вашей ссылке прошли: {0} раз(а)'.format(count_clicks(token, url)))
         else:
             print('Битлинк: ', shorten_link(token, url))
