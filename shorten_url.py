@@ -1,3 +1,4 @@
+import argparse
 import os
 from urllib.parse import urlparse
 
@@ -45,12 +46,15 @@ def shorten_link(token, url):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('bitlink', type=str, nargs='?', default='')
+    args = parser.parse_args()
     load_dotenv()
     token = os.getenv('BITLY_TOKEN')
     if not token:
         print('Файл .env не найден в текущей папке или в нем отсутствует TOKEN')
         exit()
-    url = input('Введите ссылку: ')
+    url = args.bitlink if args.bitlink else input('Введите ссылку: ')
     try:
         if is_bitlink(url, token):
             print('По вашей ссылке прошли: {0} раз(а)'.format(count_clicks(token, url)))
