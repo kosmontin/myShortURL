@@ -13,7 +13,7 @@ def is_bitlink(url, token):
         'Content-Type': 'application/json'
     }
     response = requests.get(f'https://api-ssl.bitly.com/v4/bitlinks/{bitlink}', headers=headers)
-    return True if response.ok else False
+    return response.ok
 
 
 def count_clicks(token, url):
