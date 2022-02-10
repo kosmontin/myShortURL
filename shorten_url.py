@@ -17,7 +17,8 @@ def is_bitlink(url, token):
 
 
 def count_clicks(token, url):
-    bitlink = ''.join((urlparse(url).netloc, urlparse(url).path))
+    parsed_url = urlparse(url)
+    bitlink = ''.join((parsed_url.netloc, parsed_url.path))
     headers = {
         'Authorization': token,
         'Content-Type': 'application/json'
