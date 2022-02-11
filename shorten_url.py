@@ -47,7 +47,7 @@ def shorten_link(token, url):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('bitlink', type=str, nargs='?', default=None)
+    parser.add_argument('bitlink', nargs='?')
     args = parser.parse_args()
     load_dotenv()
     token = os.getenv('BITLY_TOKEN')
